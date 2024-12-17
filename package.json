@@ -4,8 +4,15 @@
   "description": "Script to create list of journals",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src"
   },
   "author": "jvwong",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "csv-parser": "^3.0.0",
+    "lodash": "^4.17.21",
+    "neat-csv": "^7.0.0"
+  }
 }

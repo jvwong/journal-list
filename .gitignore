@@ -103,3 +103,6 @@ typings/
 .tern-port
 
 .DS_Store
+
+data/*.csv
+data/*.xml
