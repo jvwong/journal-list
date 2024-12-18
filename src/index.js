@@ -164,8 +164,12 @@ async function combineRaw(){
 
 async function addSynonyms( data ){
 
+  const hasIssn = m => _.has( m, 'issn' ) && m.issn.length;
   async function getMeta(){
-    const hasIssn = m => _.has( m, 'issn' ) && m.issn.length;
+    const meta = new Map();
+    const add2Map = m => {
+      if( hasIssn( m ) ) m.issn.forEach( issn => meta.set( issn, m ));
+    }
     const DATA_DIR = 'data';
     const DATA_FILE = 'jourcache.xml';
     const DATA_FIELDS = new Map([
@@ -176,8 +180,8 @@ async function addSynonyms( data ){
       ['Alias', 'alias']
     ]);
     const filepath = path.resolve( path.join( DATA_DIR, DATA_FILE ) );
-    let meta = await xmlFromCsv( filepath, ['JournalCache', 'Journal'], DATA_FIELDS );
-    meta = meta.filter( hasIssn );
+    let raw = await xmlFromCsv( filepath, ['JournalCache', 'Journal'], DATA_FIELDS );
+    raw.forEach( add2Map );
     return meta;
   }
 
@@ -195,15 +199,17 @@ async function addSynonyms( data ){
     return _.pull( unique, title ); // remove title
   }
 
-  function hasCommonElements( a, b ) {
-    return _.intersection( a, b ).length > 0;
-  }
-
   const merged = [];
   const meta = await getMeta();
+  const hasMeta = i => meta.has( i )
   for( const d of data ){
     let synonyms = [];
-    const match = _.find( meta, m => _.has( m, 'issn' ) && _.has( d, 'issn' ) && hasCommonElements( d.issn, m.issn ) );
+    let match;
+    let sharedIssn;
+    if( hasIssn( d ) ){
+      sharedIssn = d.issn.find( hasMeta );
+      match = meta.get( sharedIssn );
+    }
     if( match ){
       synonyms = getSynonyms( d.title, match );
     }
@@ -218,12 +224,6 @@ async function main(){
   const journals = await addSynonyms( data );
   const jsonData = JSON.stringify( journals, null, 2 );
   await writeFile( JOURNALS_PATH, jsonData, 'utf8' );
-  // const ncb = _.find( journals, o => _.includes( o['issn'], '1465-7392' ) );
-  // console.log( JSON.stringify(ncb, null, 2) );
 };
-
-//TODOs
-// - issn = split 1474175X
-// - Nature reviews cancer (1474-1768) synonym is "cancer"???
 
 main();

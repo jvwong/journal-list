@@ -3520,10 +3520,9 @@
     "publisher": "Wiley-Blackwell Publishing Ltd",
     "categories": "Biochemistry (Q1); Cell Biology (Q1); Molecular Biology (Q1)",
     "synonyms": [
-      "European journal of biochemistry",
-      "Eur J Biochem",
-      "EJB",
-      "Europ. J. Biochem"
+      "The FEBS journal",
+      "FEBS J",
+      "Federation of European Biochemical Societies journal"
     ]
   },
   {
@@ -3893,12 +3892,10 @@
     "publisher": null,
     "categories": "Endocrinology (Q1); Endocrinology, Diabetes and Metabolism (Q1)",
     "synonyms": [
-      "Bailliere's best practice & research. Clinical endocrinology & metabolism",
-      "Baillieres Best Pract Res Clin Endocrinol Metab",
-      "Bailliere's best practice & research",
-      "Bailliere's best practice and research. Clinical endocrinology and metabolism",
-      "Bailliere's clinical endocrinology and metabolism",
-      "Best practice & research in clinical endocrinology & metabolism",
+      "Best practice & research. Clinical endocrinology & metabolism",
+      "Best Pract Res Clin Endocrinol Metab",
+      "Best practice & research",
+      "Best practice and research. Clinical endocrinology and metabolism",
       "Clinical endocrinology & metabolism",
       "Clinical endocrinology and metabolism"
     ]
@@ -12915,7 +12912,9 @@
     "publisher": "Oxford University Press",
     "categories": "Agricultural and Biological Sciences (miscellaneous) (Q1); Bioengineering (Q2); Biomaterials (Q2); Biomedical Engineering (Q2); Biotechnology (Q2)",
     "synonyms": [
-      "Synth Biol"
+      "Synthetic biology (Oxford, England)",
+      "Synth Biol (Oxf)",
+      "TSACO"
     ]
   },
   {
@@ -39236,13 +39235,9 @@
     "publisher": "Centers for Disease Control and Prevention (CDC)",
     "categories": "Epidemiology (Q1); Health Information Management (Q1); Health (social science) (Q1); Health, Toxicology and Mutagenesis (Q1)",
     "synonyms": [
-      "MMWR. CDC surveillance summaries : Morbidity and mortality weekly report. CDC surveillance summaries",
-      "MMWR CDC Surveill Summ",
-      "CDC surveillance summaries",
+      "Morbidity and mortality weekly report. Surveillance summaries (Washington, D.C. : 2002)",
+      "MMWR Surveill Summ",
       "MMWR",
-      "MMWR. Surveillance summaries",
-      "Morb Mortal Wkly Rep Surveill Summ",
-      "Morbidity and mortality weekly report. CDC surveillance summaries",
       "Morbidity and mortality weekly report. Surveillance summaries",
       "Surveillance summaries"
     ]
@@ -41322,12 +41317,10 @@
     "publisher": "BMJ Publishing Group",
     "categories": "Medicine (miscellaneous) (Q1)",
     "synonyms": [
-      "BMJ (Clinical research ed.)",
+      "BMJ (International edition)",
+      "BMJ (Int Ed)",
       "BMJ",
-      "BMJ online",
-      "Brit. Med. J",
-      "British Medical Journal",
-      "bmj.com"
+      "British medical journal"
     ]
   },
   {
@@ -46039,8 +46032,7 @@
     "publisher": "Wiley-Blackwell Publishing Ltd",
     "categories": "Psychiatry and Mental Health (Q1)",
     "synonyms": [
-      "The Australian and New Zealand journal of mental health nursing",
-      "Aust N Z J Ment Health Nurs"
+      "Int J Ment Health Nurs"
     ]
   },
   {
@@ -80010,10 +80002,8 @@
     "publisher": "Sociedade Brasileira de Reproducao Assistida",
     "categories": "Obstetrics and Gynecology (Q2)",
     "synonyms": [
-      "J Bras Reprod Assist",
-      "Assisted reproduction",
-      "JBRA",
-      "JBRA assisted reproduction"
+      "JBRA assisted reproduction",
+      "JBRA Assist Reprod"
     ]
   },
   {
@@ -80962,7 +80952,9 @@
     "publisher": "Oxford University Press",
     "categories": "Cardiology and Cardiovascular Medicine (Q2); Surgery (Q2); Pulmonary and Respiratory Medicine (Q3)",
     "synonyms": [
-      "Interact Cardiovasc Thorac Surg"
+      "Interdisciplinary cardiovascular and thoracic surgery",
+      "Interdiscip Cardiovasc Thorac Surg",
+      "ICVTS"
     ]
   },
   {
@@ -92087,9 +92079,8 @@
     "publisher": "University Press of Colorado",
     "categories": "History (Q1); Anthropology (Q2); Education (Q3); Medicine (miscellaneous) (Q3); Psychiatry and Mental Health (Q3); Psychology (miscellaneous) (Q3)",
     "synonyms": [
-      "American Indian and Alaska native mental health research : journal of the National Center",
-      "Am Indian Alsk Nativ Ment Health Res (1987)",
-      "AM INDIAN ALSK NATIVE MENT HEALTH RES"
+      "American Indian and Alaska native mental health research (Online)",
+      "Am Indian Alsk Native Ment Health Res"
     ]
   },
   {
@@ -113955,8 +113946,9 @@
     "publisher": "Index Copernicus International",
     "categories": "Infectious Diseases (Q4); Medicine (miscellaneous) (Q4); Microbiology (medical) (Q4)",
     "synonyms": [
-      "Postepy Hig Med Dosw",
-      "Postepy hig. med. doswiadcz., Warsz"
+      "Postepy higieny i medycyny doswiadczalnej (Online)",
+      "Postepy Hig Med Dosw (Online)",
+      "PHMD"
     ]
   },
   {
@@ -132723,8 +132715,12 @@
     "publisher": "Elsevier Inc.",
     "categories": "Biological Psychiatry (Q1); Pharmacology (Q1)",
     "synonyms": [
-      "Progress in neuro-psychopharmacology",
-      "Prog Neuropsychopharmacol"
+      "Progress in neuro-psychopharmacology & biological psychiatry",
+      "Prog Neuropsychopharmacol Biol Psychiatry",
+      "P.N.P. & B.P. journal",
+      "P.N.P. and B.P. journal",
+      "PNP & BP journal",
+      "PNP and BP journal"
     ]
   },
   {
@@ -139428,9 +139424,8 @@
     "publisher": "Society of Veterinary Medicine of the State of Rio de Janeiro",
     "categories": "Veterinary (miscellaneous) (Q3)",
     "synonyms": [
-      "Brazilian journal of veterinary medicine",
-      "Braz J Vet Med",
-      "BJVM"
+      "Rev Bras Med Vet",
+      "Brazilian journal of veterinary medicine"
     ]
   },
   {
@@ -140383,8 +140378,10 @@
     "publisher": "Academie Veterinaire de France",
     "categories": "Veterinary (miscellaneous) (Q4)",
     "synonyms": [
-      "Bull Acad Vet Fr",
-      "Bull. Acad. vet. France"
+      "Recueil de medecine veterinaire",
+      "Rec Med Vet Ec Alfort",
+      "Rec. med. vet",
+      "Rec. med. vet., Par"
     ]
   },
   {
