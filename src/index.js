@@ -3,38 +3,6 @@ import xml2js from 'xml2js';
 import _ from 'lodash';
 import { open, readFile, writeFile } from 'node:fs/promises';
 import path from 'path';
-// {
-//   "name": [
-//     "Nature cell biology"
-//   ],
-//   "issn": [
-//     "1465-7392",
-//     "1476-4679"
-//   ],
-//   "medAbbr": [
-//     "Nat Cell Biol"
-//   ],
-//   "isoAbbr": [
-//     "Nat Cell Biol"
-//   ],
-//   "alias": [
-//     "Cell biology",
-//     "Nature Cell Biol",
-//     "Nature cell biology"
-//   ]
-// }
-// {
-//   id: "20315",
-//   title: "Nature Reviews Molecular Cell Biology",
-//   type: "journal",
-//   issn: [
-//     "1471-0072",
-//     "1471-0080",
-//   ],
-//   h_index: "508",
-//   publisher: "Nature Publishing Group",
-//   categories: "Cell Biology (Q1); Molecular Biology (Q1)",
-// }
 
 /**
  * Extract json fields from xml file
