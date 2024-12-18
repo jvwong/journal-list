@@ -112,14 +112,20 @@ async function jsonFromCsv( pathname, names, opts = {} ) {
 }
 
 async function combineRaw(){
-  const mapValues = ({ value }) => value === 'NULL' ? null : value;
+  // When values are 'NULL' or '' set to null
+  const mapValues = ({ value }) => value === 'NULL' || value === '' ? null : value;
+
+  // For issn, set null or empty to []
   const splitIssn = o => {
-    const insertHyphen = s => s.replace(/(\d{4})(\d{4})/, '$1-$2');
+    const insertHyphen = s => s.replace(/(\w{4})(\w{4})/, '$1-$2');
+    let issn = [];
     if( !_.isNull( o.issn ) ){
-      let issn = o.issn.split(',').map( s => s.trim() );
-      issn = issn.map( insertHyphen );
-      _.set( o, 'issn', issn );
+      issn = o.issn
+        .split(',')
+        .map( s => s.trim() )
+        .map( insertHyphen );
     }
+    return _.assign( {}, o, { issn } );
   }
   const DATA_DIR = 'data';
   const DATA_FILES = [
@@ -147,7 +153,7 @@ async function combineRaw(){
   for ( const filename of DATA_FILES ) {
     const filepath = path.resolve( path.join( DATA_DIR, filename ) );
     let data = await jsonFromCsv( filepath, DATA_FIELDS, { mapValues } );
-    data.forEach( splitIssn );
+    data = data.map( splitIssn );
     combined = combined.concat( data );
   }
 
@@ -155,37 +161,38 @@ async function combineRaw(){
   return combined;
 };
 
-async function getMeta(){
-  const DATA_DIR = 'data';
-  const DATA_FILE = 'jourcache.xml';
-  const DATA_FIELDS = new Map([
-    ['Name', 'name'],
-    ['Issn', 'issn'],
-    ['MedAbbr', 'medAbbr'],
-    ['IsoAbbr', 'isoAbbr'],
-    ['Alias', 'alias']
-  ]);
-  const filepath = path.resolve( path.join( DATA_DIR, DATA_FILE ) );
-  const meta = await xmlFromCsv( filepath, ['JournalCache', 'Journal'], DATA_FIELDS );
-  return meta;
-}
 
-async function mergeMeta( data ){
-  function getSynonyms( meta ){
+async function addSynonyms( data ){
+
+  async function getMeta(){
+    const hasIssn = m => _.has( m, 'issn' ) && m.issn.length;
+    const DATA_DIR = 'data';
+    const DATA_FILE = 'jourcache.xml';
+    const DATA_FIELDS = new Map([
+      ['Name', 'name'],
+      ['Issn', 'issn'],
+      ['MedAbbr', 'medAbbr'],
+      ['IsoAbbr', 'isoAbbr'],
+      ['Alias', 'alias']
+    ]);
+    const filepath = path.resolve( path.join( DATA_DIR, DATA_FILE ) );
+    let meta = await xmlFromCsv( filepath, ['JournalCache', 'Journal'], DATA_FIELDS );
+    meta = meta.filter( hasIssn );
+    return meta;
+  }
+
+  function getSynonyms( title, meta ){
+    const lowerCase = o => o.toLowerCase()
     let synonyms = [];
-    if( _.has( meta, 'name' ) ){
-      synonyms = synonyms.concat( meta.name );
-    }
-    if( _.has( meta, 'medAbbr' ) ){
-      synonyms = synonyms.concat( meta.medAbbr );
-    }
-    if( _.has( meta, 'isoAbbr' ) ){
-      synonyms = synonyms.concat( meta.isoAbbr );
-    }
-    if( _.has( meta, 'alias' ) ){
-      synonyms = synonyms.concat( meta.alias );
-    }
-    return _.uniq( synonyms );
+    const synonymKeys = ['name', 'medAbbr', 'isoAbbr', 'alias'];
+    synonymKeys.forEach( k => {
+      if( _.has( meta, k ) && _.get( meta, k ).length ){
+        synonyms = synonyms.concat( _.get( meta, k ) );
+      }
+    });
+    // include the title as a synonym for uniqueness check
+    const unique = _.uniqBy([ title, ...synonyms ], lowerCase );
+    return _.pull( unique, title ); // remove title
   }
 
   function hasCommonElements( a, b ) {
@@ -193,14 +200,12 @@ async function mergeMeta( data ){
   }
 
   const merged = [];
-
   const meta = await getMeta();
   for( const d of data ){
     let synonyms = [];
     const match = _.find( meta, m => _.has( m, 'issn' ) && _.has( d, 'issn' ) && hasCommonElements( d.issn, m.issn ) );
     if( match ){
-      synonyms = getSynonyms( match );
-      synonyms = _.pull( synonyms, d.title );
+      synonyms = getSynonyms( d.title, match );
     }
     merged.push( _.assign( {}, d, { synonyms } ) );
   }
@@ -210,12 +215,15 @@ async function mergeMeta( data ){
 async function main(){
   const JOURNALS_PATH = 'data/journal-list.json';
   const data = await combineRaw();
-  const journals = await mergeMeta( data );
+  const journals = await addSynonyms( data );
   const jsonData = JSON.stringify( journals, null, 2 );
   await writeFile( JOURNALS_PATH, jsonData, 'utf8' );
   // const ncb = _.find( journals, o => _.includes( o['issn'], '1465-7392' ) );
   // console.log( JSON.stringify(ncb, null, 2) );
 };
 
+//TODOs
+// - issn = split 1474175X
+// - Nature reviews cancer (1474-1768) synonym is "cancer"???
 
 main();
