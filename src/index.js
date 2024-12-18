@@ -115,9 +115,11 @@ async function combineRaw(){
   const mapValues = ({ value }) => value === 'NULL' ? null : value;
   const splitIssn = o => {
     const insertHyphen = s => s.replace(/(\d{4})(\d{4})/, '$1-$2');
-    let issn = o.issn.split(',').map( s => s.trim() );
-    issn = issn.map( insertHyphen );
-    o.issn = issn;
+    if( !_.isNull( o.issn ) ){
+      let issn = o.issn.split(',').map( s => s.trim() );
+      issn = issn.map( insertHyphen );
+      _.set( o, 'issn', issn );
+    }
   }
   const DATA_DIR = 'data';
   const DATA_FILES = [
@@ -206,7 +208,7 @@ async function mergeMeta( data ){
 }
 
 async function main(){
-  const JOURNALS_PATH = 'data/journals.json';
+  const JOURNALS_PATH = 'data/journal-list.json';
   const data = await combineRaw();
   const journals = await mergeMeta( data );
   const jsonData = JSON.stringify( journals, null, 2 );

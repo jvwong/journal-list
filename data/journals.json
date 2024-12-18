@@ -147144,9 +147144,7 @@
     "id": "101767986",
     "title": "medRxiv",
     "type": "preprint",
-    "issn": [
-      ""
-    ],
+    "issn": null,
     "h_index": null,
     "publisher": "Cold Spring Harbor Laboratory",
     "categories": null,
