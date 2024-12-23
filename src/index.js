@@ -29,7 +29,11 @@ async function xmlFromCsv( pathname, xmlPath = [], names, opts = {} ) {
     _.keys( o ).forEach( key => {
       const value = o[key].map( a => {
         if( a instanceof Object ){
-           return a['_'];
+          if( key === 'issn' ){
+            return { value: _.get(a, '_'), type: _.get(a, ['$', 'type']) };
+          } else {
+            return a['_'];
+          }
         } else {
           return a;
         }
@@ -97,13 +101,13 @@ async function combineRaw(){
   }
   const DATA_DIR = 'data';
   const DATA_FILES = [
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Biochemistry, Genetics and Molecular Biology.csv',
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Immunology and Microbiology.csv',
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Medicine.csv',
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Multidisciplinary.csv',
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Neuroscience.csv',
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Pharmacology, Toxicology and Pharmaceutics.csv',
-    'List of Journals and Preprints - scimagojr 2023  Subject Area - Veterinary.csv',
+    'scimagojr 2023  Subject Area - Biochemistry, Genetics and Molecular Biology.csv',
+    'scimagojr 2023  Subject Area - Immunology and Microbiology.csv',
+    'scimagojr 2023  Subject Area - Medicine.csv',
+    'scimagojr 2023  Subject Area - Multidisciplinary.csv',
+    'scimagojr 2023  Subject Area - Neuroscience.csv',
+    'scimagojr 2023  Subject Area - Pharmacology, Toxicology and Pharmaceutics.csv',
+    'scimagojr 2023  Subject Area - Veterinary.csv',
     'List of Journals and Preprints - Preprints.csv'
   ];
   const DATA_FIELDS = new Map([
@@ -116,11 +120,15 @@ async function combineRaw(){
     ['Categories', 'categories']
   ]);
 
+  const opts = {
+    separator: ';',
+    mapValues
+  };
   let combined = [];
 
   for ( const filename of DATA_FILES ) {
     const filepath = path.resolve( path.join( DATA_DIR, filename ) );
-    let data = await jsonFromCsv( filepath, DATA_FIELDS, { mapValues } );
+    let data = await jsonFromCsv( filepath, DATA_FIELDS, opts );
     data = data.map( splitIssn );
     combined = combined.concat( data );
   }
@@ -130,13 +138,17 @@ async function combineRaw(){
 };
 
 
-async function addSynonyms( data ){
+async function addMeta( data ){
 
   const hasIssn = m => _.has( m, 'issn' ) && m.issn.length;
   async function getMeta(){
     const meta = new Map();
     const add2Map = m => {
-      if( hasIssn( m ) ) m.issn.forEach( issn => meta.set( issn, m ));
+      if( hasIssn( m ) ){
+        m.issn.forEach( issn => {
+          meta.set( issn.value, m );
+        });
+      }
     }
     const DATA_DIR = 'data';
     const DATA_FILE = 'jourcache.xml';
@@ -172,7 +184,7 @@ async function addSynonyms( data ){
   const hasMeta = i => meta.has( i )
   for( const d of data ){
     let synonyms = [];
-    let match;
+    let match, issn;
     let sharedIssn;
     if( hasIssn( d ) ){
       sharedIssn = d.issn.find( hasMeta );
@@ -180,8 +192,9 @@ async function addSynonyms( data ){
     }
     if( match ){
       synonyms = getSynonyms( d.title, match );
+      issn = match.issn;
     }
-    merged.push( _.assign( {}, d, { synonyms } ) );
+    merged.push( _.assign( {}, d, { synonyms, issn } ) );
   }
   return merged;
 }
@@ -189,7 +202,7 @@ async function addSynonyms( data ){
 async function main(){
   const JOURNALS_PATH = 'data/journal-list.json';
   const data = await combineRaw();
-  const journals = await addSynonyms( data );
+  const journals = await addMeta( data );
   const jsonData = JSON.stringify( journals, null, 2 );
   await writeFile( JOURNALS_PATH, jsonData, 'utf8' );
 };
