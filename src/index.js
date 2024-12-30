@@ -84,8 +84,17 @@ async function jsonFromCsv( pathname, names, opts = {} ) {
 }
 
 async function combineRaw(){
-  // When values are 'NULL' or '' set to null
-  const mapValues = ({ value }) => value === 'NULL' || value === '' ? null : value;
+  const INT_FIELDS = new Set(['H index', 'Sourceid']);
+  const mapValues = ({ header, value }) => {
+    if( value === 'NULL' || value === '' ){
+      value = null;
+    } else {
+      if( INT_FIELDS.has( header ) ){
+        value = parseInt( value );
+      }
+    }
+    return value;
+  }
 
   // For issn, set null or empty to []
   const splitIssn = o => {
