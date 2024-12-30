@@ -184,7 +184,7 @@ async function addMeta( data ){
   const hasMeta = i => meta.has( i )
   for( const d of data ){
     let synonyms = [];
-    let match, issn;
+    let match, issn = [];
     let sharedIssn;
     if( hasIssn( d ) ){
       sharedIssn = d.issn.find( hasMeta );
